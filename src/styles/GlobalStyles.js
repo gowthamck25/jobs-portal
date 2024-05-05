@@ -28,7 +28,7 @@ const GlobalStyles = createGlobalStyle`
 }
 
 html {
-  font-size: 62.5%;
+  /* font-size: 62.5%; */
   overflow-x: hidden;
   scroll-behavior: smooth;
 }
@@ -70,8 +70,7 @@ input:focus,
 button:focus,
 textarea:focus,
 select:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.8rem rgba(253, 242, 233, 0.5);
+  outline: 2.5px solid #228be6;
 }
 
 *:focus {
