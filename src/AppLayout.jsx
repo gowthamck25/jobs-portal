@@ -1,39 +1,26 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
 import Filters from "./Filters";
 import JobsLayout from "./JobsLayout";
+import { fetchData } from "./filterSlice";
 
 function AppLayout() {
-  const [data, setData] = useState();
-  useEffect(function () {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+  // const [data, setData] = useState();
+  const dispatch = useDispatch();
 
-    const body = JSON.stringify({
-      limit: 947,
-      offset: 0,
-    });
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body,
-    };
-
-    fetch(
-      "https://api.weekday.technology/adhoc/getSampleJdJSON",
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => {
-        // console.log(JSON.parse(result));
-        setData(JSON.parse(result));
-      })
-      .catch((error) => console.error(error));
-  }, []);
+  useEffect(
+    function () {
+      dispatch(fetchData());
+    },
+    [dispatch]
+  );
 
   return (
     <>
-      <Filters data={data} />
+      <Filters
+      //  data={data}
+      />
       <JobsLayout />
     </>
   );
