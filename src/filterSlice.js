@@ -2,12 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   data: {},
+  initialData: {},
   status: "idle",
-  roles: [],
-  emplyeesRange: [],
-  experience: "",
-  remote: [],
-  minBaseSalary: "",
+  //   roles: [],
+  //   emplyeesRange: [],
+  //   experience: "",
+  //   remote: [],
+  //   minBaseSalary: "",
 };
 
 export const fetchData = createAsyncThunk(
@@ -44,9 +45,21 @@ const filterSlice = createSlice({
   name: "filter",
   initialState,
   reducers: {
-    setData(state, action) {
-      //   console.log(state);
-      state.data = action.payload;
+    onRoleChange(state, action) {
+      // Use current role input values along with jobs inital data to compute the role filtered data
+      const { values, jobsInitialData } = action.payload;
+      const roleBasedData = [];
+      //   console.log(values, jobsInitialData);
+      for (let i = 0; i < values.length; i++) {
+        roleBasedData.push(
+          ...jobsInitialData.filter(
+            (item) => item.jobRole === values[i].toLowerCase()
+          )
+        );
+      }
+      //   console.log(roleBasedData);
+      if (values.length > 0) state.data = roleBasedData;
+      else state.data = jobsInitialData;
     },
   },
   extraReducers: (builder) =>
@@ -55,7 +68,11 @@ const filterSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchData.fulfilled, (state, action) => {
-        state.data = JSON.parse(action.payload);
+        const jobsData = JSON.parse(action.payload);
+        const unpackedJobsData = [...jobsData.jdList];
+
+        state.data = unpackedJobsData;
+        state.initialData = unpackedJobsData;
         state.status = "idle";
       })
       .addCase(fetchData.rejected, (state, action) => {
@@ -65,4 +82,4 @@ const filterSlice = createSlice({
 });
 
 export default filterSlice.reducer;
-export const { setData, filterRole } = filterSlice.actions;
+export const { onRoleChange, filterRole } = filterSlice.actions;

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { Autocomplete, TextField } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./Spinner";
+import { onRoleChange } from "./filterSlice";
 
 const FilterBox = styled.div`
   display: flex;
@@ -28,14 +29,17 @@ const remote = ["Remote", "Hybrid", "In-Office"];
 const minBaseSalaries = ["0L", "10L", "20L", "30L", "40L", "50L", "60L", "70L"];
 
 function Filters() {
+  const dispatch = useDispatch();
+
+  // Get Jobs data from store
   const jobsData = useSelector((store) => store.filter.data);
+  const jobsInitialData = useSelector((store) => store.filter.initialData);
 
-  if (!jobsData.jdList) return <Spinner />;
+  if (!jobsData.length) return <Spinner />;
 
-  const unpackJobsData = [...jobsData.jdList];
-
+  // Logic to get unique roles from Jobs data
   const uniqueRoles = new Set([
-    ...unpackJobsData.map((jd) =>
+    ...jobsInitialData.map((jd) =>
       jd.jobRole
         .split(" ")
         .map((word) => word[0].toUpperCase() + word.slice(1))
@@ -53,6 +57,9 @@ function Filters() {
         options={jobRoles}
         sx={{ width: 200 }}
         renderInput={(params) => <TextField {...params} label="Roles" />}
+        onChange={(e, values) =>
+          dispatch(onRoleChange({ values, jobsInitialData }))
+        }
       />
       <Autocomplete
         disablePortal
