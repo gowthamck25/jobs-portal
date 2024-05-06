@@ -165,10 +165,10 @@ function JobCard({ job }) {
       {/* Handling NULL values based on whether minSalary or maxSalary  present */}
       <SalaryBox>
         {minSalary && maxSalary
-          ? `Estimated Salary: ${salaryCurrencyCode} ${minSalary}L -  ${maxSalary}L`
+          ? `Estimated Salary: ${salaryCurrencyCode} ${minSalary} -  ${maxSalary} LPA`
           : minSalary && !maxSalary
-          ? `Estimated Salary: ${salaryCurrencyCode} ${minSalary}L`
-          : `Estimated Salary: ${salaryCurrencyCode} ${maxSalary}L`}
+          ? `Estimated Salary: ${salaryCurrencyCode} ${minSalary} LPA`
+          : `Estimated Salary: ${salaryCurrencyCode} ${maxSalary} LPA`}
       </SalaryBox>
 
       <AboutHeading>About Company:</AboutHeading>

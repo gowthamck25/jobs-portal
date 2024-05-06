@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Autocomplete, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import Spinner from "./Spinner";
 import { setFilteredData, setLocations, setRoles } from "./filterSlice";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
@@ -13,6 +12,14 @@ const FilterBox = styled.div`
   max-width: 90rem;
   margin: 0 auto;
   padding: 3rem;
+
+  @media (max-width: 376px) {
+    padding: 20px;
+  }
+
+  @media (max-width: 321px) {
+    padding: 14px;
+  }
 `;
 
 const experiences = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
@@ -84,7 +91,7 @@ function Filters() {
     experienceFilter.length > 0
   ) {
     filteredData = filteredData.filter(
-      (item) => item.minExp >= +experienceFilter
+      (item) => item.minExp <= +experienceFilter
     );
   }
 

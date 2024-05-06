@@ -11,6 +11,26 @@ const StyledJobsLayout = styled.div`
   padding: 3.6rem 2.4rem;
   height: 100vh;
   overflow-y: scroll;
+
+  @media (max-width: 1441px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  @media (max-width: 1025px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 426px) {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 376px) {
+    padding: 20px;
+  }
+
+  @media (max-width: 321px) {
+    padding: 14px;
+  }
 `;
 
 function JobsLayout() {
