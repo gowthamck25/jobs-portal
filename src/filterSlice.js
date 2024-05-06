@@ -1,9 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  data: {},
-  initialData: {},
+  data: [],
+  initialData: [],
+  filteredData: [],
+  isFilterOn: false,
   status: "idle",
+  isRoleFilterOn: false,
+  isExperienceFileterOn: false,
+  isBaseSalaryFilterOn: false,
+
   //   roles: [],
   //   emplyeesRange: [],
   //   experience: "",
@@ -61,6 +67,22 @@ const filterSlice = createSlice({
       if (values.length > 0) state.data = roleBasedData;
       else state.data = jobsInitialData;
     },
+    onExperienceChange(state, action) {
+      const { value, jobsData } = action.payload;
+
+      if (!value) {
+        state.data = jobsData;
+        state.filteredData = jobsData;
+        return;
+      }
+
+      const expFilterData = [
+        ...jobsData.filter((item) => +value <= item.minExp),
+      ];
+      state.data = expFilterData;
+      state.filteredData = expFilterData;
+    },
+    onBaseSalaryChange(state, action) {},
   },
   extraReducers: (builder) =>
     builder
@@ -82,4 +104,5 @@ const filterSlice = createSlice({
 });
 
 export default filterSlice.reducer;
-export const { onRoleChange, filterRole } = filterSlice.actions;
+export const { onRoleChange, onExperienceChange, filterRole } =
+  filterSlice.actions;

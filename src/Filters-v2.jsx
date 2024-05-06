@@ -3,7 +3,6 @@ import { Autocomplete, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import Spinner from "./Spinner";
 import { onExperienceChange, onRoleChange } from "./filterSlice";
-import { useSearchParams } from "react-router-dom";
 
 const FilterBox = styled.div`
   display: flex;
@@ -31,29 +30,11 @@ const minBaseSalaries = ["0L", "10L", "20L", "30L", "40L", "50L", "60L", "70L"];
 
 function Filters() {
   const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const rolesFilter = searchParams.get("roles");
-  const experienceFilter = searchParams.get("experience");
-  const mbspFilter = searchParams.get("mbsp");
-
-  function handleRoleChange(e, value) {
-    searchParams.set("roles", value);
-    setSearchParams(searchParams);
-  }
-
-  function handleExperienceChange(e, value) {
-    searchParams.set("experience", value);
-    setSearchParams(searchParams);
-  }
-
-  function handleMBSP(e, value) {
-    searchParams.set("mbsp", value);
-    setSearchParams(searchParams);
-  }
 
   // Get Jobs data from store
   const jobsData = useSelector((store) => store.filter.data);
   const jobsInitialData = useSelector((store) => store.filter.initialData);
+  const filteredData = useSelector((store) => store.filter.filteredData);
 
   if (!jobsData.length) return <Spinner />;
 
@@ -77,7 +58,9 @@ function Filters() {
         options={jobRoles}
         sx={{ width: 200 }}
         renderInput={(params) => <TextField {...params} label="Roles" />}
-        onChange={(e, values) => handleRoleChange(e, values)}
+        onChange={(e, values) =>
+          dispatch(onRoleChange({ values, jobsInitialData }))
+        }
       />
       {/* <Autocomplete
         disablePortal
@@ -95,7 +78,9 @@ function Filters() {
         options={experiences}
         sx={{ width: 150 }}
         renderInput={(params) => <TextField {...params} label="Experience" />}
-        onChange={(e, value) => handleExperienceChange(e, value)}
+        onChange={(e, value) =>
+          dispatch(onExperienceChange({ value, jobsData }))
+        }
       />
       {/* <Autocomplete
         disablePortal
@@ -113,7 +98,6 @@ function Filters() {
         renderInput={(params) => (
           <TextField {...params} label="Minimum Base Salary Pay" />
         )}
-        onChange={(e, value) => handleMBSP(e, value)}
       />
     </FilterBox>
   );
