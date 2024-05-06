@@ -4,9 +4,17 @@ const initialState = {
   data: [],
   initialData: [],
   filteredData: [],
-  roles: [],
-  locations: [],
+  isFilterOn: false,
   status: "idle",
+  isRoleFilterOn: false,
+  isExperienceFileterOn: false,
+  isBaseSalaryFilterOn: false,
+
+  //   roles: [],
+  //   emplyeesRange: [],
+  //   experience: "",
+  //   remote: [],
+  //   minBaseSalary: "",
 };
 
 export const fetchData = createAsyncThunk(
@@ -43,15 +51,36 @@ const filterSlice = createSlice({
   name: "filter",
   initialState,
   reducers: {
-    setRoles(state, action) {
-      state.roles = action.payload;
-    },
-    setLocations(state, action) {
-      state.locations = action.payload;
-    },
-    setFilteredData(state, action) {
-      state.filteredData = action.payload;
-    },
+    // onRoleChange(state, action) {
+    //   // Use current role input values along with jobs inital data to compute the role filtered data
+    //   const { values, jobsInitialData } = action.payload;
+    //   const roleBasedData = [];
+    //   //   console.log(values, jobsInitialData);
+    //   for (let i = 0; i < values.length; i++) {
+    //     roleBasedData.push(
+    //       ...jobsInitialData.filter(
+    //         (item) => item.jobRole === values[i].toLowerCase()
+    //       )
+    //     );
+    //   }
+    //   //   console.log(roleBasedData);
+    //   if (values.length > 0) state.data = roleBasedData;
+    //   else state.data = jobsInitialData;
+    // },
+    // onExperienceChange(state, action) {
+    //   const { value, jobsData } = action.payload;
+    //   if (!value) {
+    //     state.data = jobsData;
+    //     state.filteredData = jobsData;
+    //     return;
+    //   }
+    //   const expFilterData = [
+    //     ...jobsData.filter((item) => +value <= item.minExp),
+    //   ];
+    //   state.data = expFilterData;
+    //   state.filteredData = expFilterData;
+    // },
+    // onBaseSalaryChange(state, action) {},
   },
   extraReducers: (builder) =>
     builder
@@ -61,7 +90,7 @@ const filterSlice = createSlice({
       .addCase(fetchData.fulfilled, (state, action) => {
         const jobsData = JSON.parse(action.payload);
         const unpackedJobsData = [...jobsData.jdList];
-        console.log(unpackedJobsData);
+
         state.data = unpackedJobsData;
         state.initialData = unpackedJobsData;
         state.status = "idle";
@@ -73,4 +102,5 @@ const filterSlice = createSlice({
 });
 
 export default filterSlice.reducer;
-export const { setRoles, setLocations, setFilteredData } = filterSlice.actions;
+export const { onRoleChange, onExperienceChange, filterRole } =
+  filterSlice.actions;
