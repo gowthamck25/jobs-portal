@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import Filters from "./Filters";
@@ -6,7 +6,6 @@ import JobsLayout from "./JobsLayout";
 import { fetchData } from "./filterSlice";
 
 function AppLayout() {
-  // const [data, setData] = useState();
   const dispatch = useDispatch();
 
   useEffect(
@@ -18,9 +17,7 @@ function AppLayout() {
 
   return (
     <>
-      <Filters
-      //  data={data}
-      />
+      <Filters />
       <JobsLayout />
     </>
   );

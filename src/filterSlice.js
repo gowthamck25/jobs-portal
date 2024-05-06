@@ -50,6 +50,7 @@ const filterSlice = createSlice({
       state.locations = action.payload;
     },
     setFilteredData(state, action) {
+      // console.log(action.payload);
       state.filteredData = action.payload;
     },
   },
@@ -61,7 +62,8 @@ const filterSlice = createSlice({
       .addCase(fetchData.fulfilled, (state, action) => {
         const jobsData = JSON.parse(action.payload);
         const unpackedJobsData = [...jobsData.jdList];
-        console.log(unpackedJobsData);
+
+        // console.log(unpackedJobsData);
         state.data = unpackedJobsData;
         state.initialData = unpackedJobsData;
         state.status = "idle";

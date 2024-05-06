@@ -8,6 +8,7 @@ import { useEffect } from "react";
 
 const FilterBox = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 2rem;
   max-width: 90rem;
   margin: 0 auto;
@@ -22,17 +23,20 @@ function Filters() {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Get Jobs data from store
+  // Get store data
   const jobsData = useSelector((store) => store.filter.data);
   const jobsInitialData = useSelector((store) => store.filter.initialData);
   const roles = useSelector((store) => store.filter.roles);
   const locations = useSelector((store) => store.filter.locations);
 
+  // Get filter values from url parameters
   const rolesFilter = searchParams.get("roles");
   const experienceFilter = searchParams.get("experience");
   const mbspFilter = searchParams.get("mbsp");
   const locationFilter = searchParams.get("location");
+  // console.log(rolesFilter, experienceFilter, mbspFilter, locationFilter);
 
+  // Handle select onChange - set url parameters with values
   function handleRoleChange(e, value) {
     searchParams.set("roles", value);
     setSearchParams(searchParams);
@@ -53,40 +57,48 @@ function Filters() {
     setSearchParams(searchParams);
   }
 
-  // Logic to  filter data based on url paramerts that are set during filtering
+  // Logic to  filter data
   let filteredData = [];
-  if (rolesFilter) {
+  // Filter based on roles
+  // console.log(rolesFilter, typeof rolesFilter);
+  if (rolesFilter !== null && rolesFilter.length > 0) {
     const roles = rolesFilter.split(",");
     for (let i = 0; i < roles.length; i++) {
       filteredData.push(
-        ...jobsData.filter((item) => item.jobRole === roles[i].toLowerCase())
+        ...jobsData.filter((item) => item.jobRole === roles[i]?.toLowerCase())
       );
     }
   } else filteredData = jobsData;
+  // console.log(filteredData);
 
-  if (experienceFilter) {
+  // Filter based on experience
+  if (experienceFilter !== null && experienceFilter.length > 0) {
     filteredData = filteredData.filter(
       (item) =>
         item.minExp <= +experienceFilter && +experienceFilter <= item.maxExp
     );
   }
 
-  if (mbspFilter) {
+  // Filter based on Min Base Salary Pay
+  if (mbspFilter !== null && mbspFilter.length > 0) {
     filteredData = filteredData.filter(
       (item) => +item.minJdSalary >= parseInt(mbspFilter)
     );
   }
 
-  if (location) {
+  // Filter based on location
+  if (locationFilter !== null && locationFilter.length > 0) {
     filteredData = filteredData.filter(
-      (item) => item.location === locationFilter.toLowerCase()
+      (item) => item.location === locationFilter?.toLowerCase()
     );
   }
+  // Set filteredData in store
+  // console.log(filteredData);
   dispatch(setFilteredData(filteredData));
 
   useEffect(
     function () {
-      // Logic to get unique roles from Jobs data
+      // Get unique roles from given data
       const uniqueRoles = new Set([
         ...jobsInitialData.map((jd) =>
           jd.jobRole
@@ -98,7 +110,7 @@ function Filters() {
       const jobRoles = Array.from(uniqueRoles);
       if (jobRoles) dispatch(setRoles(jobRoles));
 
-      // Logic to get unique location from Jobs data
+      // Get unique companies from given data
       const uniqueLocations = new Set([
         ...jobsInitialData.map(
           (jd) => jd.location[0].toUpperCase() + jd.location.slice(1)
@@ -109,8 +121,6 @@ function Filters() {
     },
     [dispatch, jobsInitialData]
   );
-
-  if (!roles || !location) return <Spinner />;
 
   return (
     <FilterBox>
