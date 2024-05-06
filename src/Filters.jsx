@@ -61,21 +61,6 @@ function Filters() {
   function handleSearch(e) {
     searchParams.set("companyname", e.target.value);
     setSearchParams(searchParams);
-    // const currentFilteredData = filteredData;
-    // console.log(e.target.value, typeof e.target.value);
-    // if (e.target.value.length === 0) {
-    //   filteredData = currentFilteredData;
-    //   // dispatch(setFilteredData(filteredData));
-    //   return;
-    // }
-
-    // filteredData = filteredData.filter((job) => {
-    //   // console.log(job.companyName, value);
-    //   return job.companyName
-    //     .toLowerCase()
-    //     .includes(e.target.value.toLowerCase());
-    // });
-    // // dispatch(setFilteredData(filteredData));
   }
 
   // Logic to  filter data
@@ -121,9 +106,9 @@ function Filters() {
     );
   }
 
-  if (companyNameFilter.length > 0) {
+  if (companyNameFilter && companyNameFilter.length > 0) {
     filteredData = filteredData.filter((item) =>
-      item.companyName.toLowerCase().includes(companyNameFilter)
+      item.companyName.toLowerCase().includes(companyNameFilter.toLowerCase())
     );
   }
 
@@ -196,7 +181,7 @@ function Filters() {
       />
       <TextField
         id="outlined-basic"
-        label="Company Name"
+        label="Search Company Name"
         variant="outlined"
         onChange={(e, value) => handleSearch(e, value)}
       />

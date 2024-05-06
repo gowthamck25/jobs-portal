@@ -5,6 +5,9 @@ const StyledJobCard = styled.div`
   padding: 24px;
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-lg);
+
+  display: flex;
+  flex-direction: column;
 `;
 
 const LogoBox = styled.div`
@@ -46,19 +49,36 @@ const AboutSubHeading = styled.p`
   font-weight: 600;
 `;
 
+const JDBox = styled.div`
+  position: relative;
+`;
+
 const JobDescription = styled.p`
   font-size: 15px;
+  height: 275px;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    rgb(255, 255, 255),
+    rgb(255, 255, 255),
+    rgba(255, 255, 255, 0)
+  );
   color: #777;
   margin-top: 10px;
 `;
 
+const JDLinkBox = styled.div`
+  position: absolute;
+  bottom: 1%;
+  width: 100%;
+  text-align: center;
+`;
+
 const JDLink = styled.a`
-  color: #4263eb;
+  color: #4943da;
   font-size: 15px;
 
   &:hover {
     cursor: pointer;
-    color: #3b5bdb;
   }
 `;
 
@@ -73,6 +93,36 @@ const ExperienceHeading = styled.p`
 const Experince = styled.p`
   color: #555;
   font-size: 13px;
+`;
+const ButtonBox = styled.div`
+  margin-top: auto;
+`;
+const EasyApplyButton = styled.button`
+  background: none;
+  border: none;
+  border-radius: var(--border-radius-lg);
+  height: 50px;
+  width: 100%;
+  background-color: rgb(85, 239, 196);
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  font-weight: 500;
+  padding: 8px 18px;
+  margin-top: 15px;
+`;
+
+const ReferralButton = styled.button`
+  background: none;
+  border: none;
+  border-radius: var(--border-radius-lg);
+  height: 50px;
+  width: 100%;
+  background-color: #4943da;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 8px 18px;
+  margin-top: 15px;
 `;
 
 function JobCard({ job }) {
@@ -123,10 +173,14 @@ function JobCard({ job }) {
 
       <AboutHeading>About Company:</AboutHeading>
       <AboutSubHeading>About us:</AboutSubHeading>
-      <JobDescription>{details}</JobDescription>
-      <JDLink href={jobLink} target="_blank">
-        {jobLink}
-      </JDLink>
+      <JDBox>
+        <JobDescription>{details}</JobDescription>
+        <JDLinkBox>
+          <JDLink href={jobLink} target="_blank">
+            View job
+          </JDLink>
+        </JDLinkBox>
+      </JDBox>
 
       {minExp && (
         <>
@@ -135,6 +189,11 @@ function JobCard({ job }) {
           <Experince>{minExp} years</Experince>
         </>
       )}
+
+      <ButtonBox>
+        <EasyApplyButton>⚡Easy Apply</EasyApplyButton>
+        <ReferralButton>Unlock referral asks</ReferralButton>
+      </ButtonBox>
     </StyledJobCard>
   );
 }
