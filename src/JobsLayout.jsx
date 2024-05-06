@@ -4,10 +4,12 @@ import JobCard from "./JobCard";
 
 const StyledJobsLayout = styled.div`
   display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 3.6rem;
+
   padding: 3.6rem 2.4rem;
   height: 100vh;
   overflow-y: scroll;
-  grid-template-columns: 1fr 1fr 1fr;
 `;
 
 function JobsLayout() {

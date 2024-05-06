@@ -34,6 +34,7 @@ function Filters() {
   const experienceFilter = searchParams.get("experience");
   const mbspFilter = searchParams.get("mbsp");
   const locationFilter = searchParams.get("location");
+  const companyNameFilter = searchParams.get("companyname");
   // console.log(rolesFilter, experienceFilter, mbspFilter, locationFilter);
 
   // Handle select onChange - set url parameters with values
@@ -57,11 +58,31 @@ function Filters() {
     setSearchParams(searchParams);
   }
 
+  function handleSearch(e) {
+    searchParams.set("companyname", e.target.value);
+    setSearchParams(searchParams);
+    // const currentFilteredData = filteredData;
+    // console.log(e.target.value, typeof e.target.value);
+    // if (e.target.value.length === 0) {
+    //   filteredData = currentFilteredData;
+    //   // dispatch(setFilteredData(filteredData));
+    //   return;
+    // }
+
+    // filteredData = filteredData.filter((job) => {
+    //   // console.log(job.companyName, value);
+    //   return job.companyName
+    //     .toLowerCase()
+    //     .includes(e.target.value.toLowerCase());
+    // });
+    // // dispatch(setFilteredData(filteredData));
+  }
+
   // Logic to  filter data
   let filteredData = [];
   // Filter based on roles
   // console.log(rolesFilter, typeof rolesFilter);
-  if (rolesFilter !== null && rolesFilter.length > 0) {
+  if (rolesFilter && rolesFilter !== "null" && rolesFilter.length > 0) {
     const roles = rolesFilter.split(",");
     for (let i = 0; i < roles.length; i++) {
       filteredData.push(
@@ -72,26 +93,40 @@ function Filters() {
   // console.log(filteredData);
 
   // Filter based on experience
-  if (experienceFilter !== null && experienceFilter.length > 0) {
+  if (
+    experienceFilter &&
+    experienceFilter !== "null" &&
+    experienceFilter.length > 0
+  ) {
     filteredData = filteredData.filter(
-      (item) =>
-        item.minExp <= +experienceFilter && +experienceFilter <= item.maxExp
+      (item) => item.minExp >= +experienceFilter
     );
   }
 
   // Filter based on Min Base Salary Pay
-  if (mbspFilter !== null && mbspFilter.length > 0) {
+  if (mbspFilter && mbspFilter !== "null" && mbspFilter.length > 0) {
     filteredData = filteredData.filter(
       (item) => +item.minJdSalary >= parseInt(mbspFilter)
     );
   }
 
   // Filter based on location
-  if (locationFilter !== null && locationFilter.length > 0) {
+  if (
+    locationFilter &&
+    locationFilter !== "null" &&
+    locationFilter.length > 0
+  ) {
     filteredData = filteredData.filter(
       (item) => item.location === locationFilter?.toLowerCase()
     );
   }
+
+  if (companyNameFilter.length > 0) {
+    filteredData = filteredData.filter((item) =>
+      item.companyName.toLowerCase().includes(companyNameFilter)
+    );
+  }
+
   // Set filteredData in store
   // console.log(filteredData);
   dispatch(setFilteredData(filteredData));
@@ -158,6 +193,12 @@ function Filters() {
         sx={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label="Location" />}
         onChange={(e, value) => handleLocationChange(e, value)}
+      />
+      <TextField
+        id="outlined-basic"
+        label="Company Name"
+        variant="outlined"
+        onChange={(e, value) => handleSearch(e, value)}
       />
     </FilterBox>
   );
