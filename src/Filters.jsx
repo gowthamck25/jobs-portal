@@ -1,9 +1,10 @@
-import styled from "styled-components";
+import { useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Autocomplete, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+
 import { setFilteredData, setLocations, setRoles } from "./filterSlice";
-import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
 
 const FilterBox = styled.div`
   display: flex;
@@ -30,7 +31,7 @@ function Filters() {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // Get store data
+  // Get data from store
   const jobsData = useSelector((store) => store.filter.data);
   const jobsInitialData = useSelector((store) => store.filter.initialData);
   const roles = useSelector((store) => store.filter.roles);
@@ -42,9 +43,8 @@ function Filters() {
   const mbspFilter = searchParams.get("mbsp");
   const locationFilter = searchParams.get("location");
   const companyNameFilter = searchParams.get("companyname");
-  // console.log(rolesFilter, experienceFilter, mbspFilter, locationFilter);
 
-  // Handle select onChange - set url parameters with values
+  // Handle selects onChange - set url parameters with values
   function handleRoleChange(e, value) {
     searchParams.set("roles", value);
     setSearchParams(searchParams);
@@ -72,8 +72,8 @@ function Filters() {
 
   // Logic to  filter data
   let filteredData = [];
+
   // Filter based on roles
-  // console.log(rolesFilter, typeof rolesFilter);
   if (rolesFilter && rolesFilter !== "null" && rolesFilter.length > 0) {
     const roles = rolesFilter.split(",");
     for (let i = 0; i < roles.length; i++) {
@@ -82,7 +82,6 @@ function Filters() {
       );
     }
   } else filteredData = jobsData;
-  // console.log(filteredData);
 
   // Filter based on experience
   if (
@@ -113,6 +112,7 @@ function Filters() {
     );
   }
 
+  // Filter based on Search
   if (companyNameFilter && companyNameFilter.length > 0) {
     filteredData = filteredData.filter((item) =>
       item.companyName.toLowerCase().includes(companyNameFilter.toLowerCase())
@@ -120,7 +120,6 @@ function Filters() {
   }
 
   // Set filteredData in store
-  // console.log(filteredData);
   dispatch(setFilteredData(filteredData));
 
   useEffect(

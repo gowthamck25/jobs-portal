@@ -9,6 +9,7 @@ const initialState = {
   status: "idle",
 };
 
+// Fetch jobs data using Async Thunk
 export const fetchData = createAsyncThunk(
   "filter/fetchData",
   async function () {
@@ -34,7 +35,7 @@ export const fetchData = createAsyncThunk(
     if (!res) console.error(res.error);
 
     const data = res.text();
-    // console.log(data);
+
     return data;
   }
 );
@@ -43,27 +44,30 @@ const filterSlice = createSlice({
   name: "filter",
   initialState,
   reducers: {
+    // Populate state.roles with unique roles
     setRoles(state, action) {
       state.roles = action.payload;
     },
+    // Populate state.locations with unique locations
     setLocations(state, action) {
       state.locations = action.payload;
     },
+    // Populate state.filteredData with data dispatched from Filters.jsx
     setFilteredData(state, action) {
-      // console.log(action.payload);
       state.filteredData = action.payload;
     },
   },
+  // Logic to handle Promise from Redux Thunk
   extraReducers: (builder) =>
     builder
       .addCase(fetchData.pending, (state, action) => {
         state.status = "loading";
       })
       .addCase(fetchData.fulfilled, (state, action) => {
+        // Unpack jobs list into array and update store
         const jobsData = JSON.parse(action.payload);
         const unpackedJobsData = [...jobsData.jdList];
 
-        // console.log(unpackedJobsData);
         state.data = unpackedJobsData;
         state.initialData = unpackedJobsData;
         state.status = "idle";

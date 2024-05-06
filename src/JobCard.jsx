@@ -1,4 +1,6 @@
+// This is Presentational Component
 import styled from "styled-components";
+
 import Img from "./ui/Img";
 
 const StyledJobCard = styled.div`

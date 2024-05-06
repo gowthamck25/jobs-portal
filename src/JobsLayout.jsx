@@ -1,7 +1,8 @@
+import { Box, Alert } from "@mui/material";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+
 import JobCard from "./JobCard";
-import { Box, Alert } from "@mui/material";
 
 const StyledJobsLayout = styled.div`
   display: grid;
@@ -36,6 +37,7 @@ const StyledJobsLayout = styled.div`
 function JobsLayout() {
   const jobs = useSelector((store) => store.filter.filteredData);
 
+  // When there is no jobs found based on filter then display "No jobs found"
   if (jobs.length === 0)
     return (
       <Box
@@ -50,6 +52,7 @@ function JobsLayout() {
       </Box>
     );
 
+  // When jobs are available display JOB CARDS
   return (
     <StyledJobsLayout>
       {jobs.map((job) => (

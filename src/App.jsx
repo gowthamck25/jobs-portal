@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import AppLayout from "./AppLayout";
+
 import GlobalStyles from "./styles/GlobalStyles";
+import AppLayout from "./AppLayout";
 
 function App() {
   return (

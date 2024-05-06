@@ -1,17 +1,18 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Alert, Box, CircularProgress } from "@mui/material";
 
+import { fetchData } from "./filterSlice";
 import Filters from "./Filters";
 import JobsLayout from "./JobsLayout";
-import { fetchData } from "./filterSlice";
-import { Alert, Box, CircularProgress } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 function AppLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const data = useSelector((store) => store.filter.data);
 
+  // Clear all filters when page reloads
   useEffect(
     function () {
       navigate("/searchjobs");
@@ -19,6 +20,7 @@ function AppLayout() {
     [navigate]
   );
 
+  // Fetch data when page reloads
   useEffect(
     function () {
       dispatch(fetchData());
@@ -26,6 +28,7 @@ function AppLayout() {
     [dispatch]
   );
 
+  // When data is loading display Spinner
   if (data.length === 0)
     return (
       <Box
@@ -45,6 +48,7 @@ function AppLayout() {
       </Box>
     );
 
+  // Display app once data has arriver
   return (
     <>
       <Filters />
