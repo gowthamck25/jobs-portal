@@ -173,7 +173,7 @@ function Filters() {
         options={minBaseSalaries}
         sx={{ width: 300 }}
         renderInput={(params) => (
-          <TextField {...params} label="Minimum Base Salary Pay" />
+          <TextField {...params} label="Minimum Base Pay Salary" />
         )}
         onChange={(e, value) => handleMBSPChange(e, value)}
       />
